@@ -8,7 +8,7 @@ if(form&&status){
       status.textContent='Please complete the required fields.';
       return;
     }
-    status.textContent='Inquiry validated locally. No information was sent. Connect an email or backend service before launch.';
-    form.reset();
+    status.textContent='Your details are valid, but this form does not send inquiries yet. Please use the Email link to contact us. Your details remain here for you to copy.';
   });
 }
+

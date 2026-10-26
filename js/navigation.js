@@ -5,3 +5,4 @@ document.querySelectorAll('.nav-links a').forEach(link=>{
 });
 const brand=document.querySelector('.brand[href="index.html"]');
 if(brand&&(path==='index.html'||location.pathname.endsWith('/'))) brand.setAttribute('aria-current','page');
+

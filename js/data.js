@@ -7,3 +7,4 @@ const portfolioProjects=[
  {title:'Editorial / Publishing',category:'publishing',year:'2026',description:'Experimental publication direction combining typography, image and narrative.'},
  {title:'Experimental Media',category:'experimental',year:'2026',description:'A visual playground for motion, storytelling and emerging creative formats.'}
 ];
+

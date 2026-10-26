@@ -3,10 +3,10 @@ const SPRFOLIO={
   brand:'SPRFOLIO',
   type:'Creative House',
   tagline:'One Creative House. Many Creative Worlds.',
-  email:'hello@sprfolio.com',
-  socials:{instagram:'',behance:'',linkedin:'',youtube:''},
+  email:'thesprfolio@gmail.com',
+  socials:{instagram:'https://www.instagram.com/sprfolio/',facebook:'https://www.facebook.com/profile.php?id=61594658203711',linkedin:'https://www.linkedin.com/in/spr-folio-50094443b/',youtube:'https://www.youtube.com/@SPRFOLIO'},
   year:new Date().getFullYear(),
-  colors:{ink:'#10110f',paper:'#f5f1e8',white:'#fffdf8',beige:'#ded5c3',sage:'#9eaa8f'}
+  colors:{ink:'#191c18',paper:'#f6f2e9',white:'#fffefa',beige:'#e5dfd2',sage:'#87957e'}
 };
 
 document.documentElement.style.setProperty('--ink',SPRFOLIO.colors.ink);
@@ -16,7 +16,7 @@ document.documentElement.style.setProperty('--beige',SPRFOLIO.colors.beige);
 document.documentElement.style.setProperty('--sage',SPRFOLIO.colors.sage);
 document.querySelectorAll('[data-year]').forEach(el=>el.textContent=SPRFOLIO.year);
 document.querySelectorAll('[data-email]').forEach(el=>{
-  el.textContent=SPRFOLIO.email;
+  el.textContent='Email ↗';
   if(el.tagName==='A') el.href=`mailto:${SPRFOLIO.email}`;
 });
 
@@ -63,8 +63,11 @@ updateHeader();
 const menuToggle=document.querySelector('.menu-toggle');
 const overlay=document.querySelector('.menu-overlay');
 if(menuToggle&&overlay){
+  const closeButton=overlay.querySelector('.menu-close');
+  overlay.inert=true;
   const close=({restoreFocus=true}={})=>{
     overlay.classList.remove('open');
+    overlay.inert=true;
     overlay.setAttribute('aria-hidden','true');
     menuToggle.setAttribute('aria-expanded','false');
     menuToggle.setAttribute('aria-label','Open navigation');
@@ -72,20 +75,32 @@ if(menuToggle&&overlay){
     if(restoreFocus) menuToggle.focus();
   };
   const open=()=>{
+    overlay.inert=false;
     overlay.classList.add('open');
     overlay.setAttribute('aria-hidden','false');
     menuToggle.setAttribute('aria-expanded','true');
     menuToggle.setAttribute('aria-label','Close navigation');
     document.body.style.overflow='hidden';
-    const firstLink=overlay.querySelector('a');
-    if(firstLink) firstLink.focus();
+    if(closeButton) closeButton.focus();
   };
+  if(closeButton) closeButton.addEventListener('click',()=>close());
   menuToggle.addEventListener('click',()=>overlay.classList.contains('open')?close():open());
   overlay.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>close({restoreFocus:false})));
   document.addEventListener('keydown',e=>{
-    if(e.key==='Escape'&&overlay.classList.contains('open')) close();
+    if(!overlay.classList.contains('open')) return;
+    if(e.key==='Escape') close();
+    if(e.key==='Tab'){
+      const controls=[...overlay.querySelectorAll('button,a[href]')];
+      const first=controls[0],last=controls[controls.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+    }
   });
 }
+
+window.matchMedia('(min-width: 901px)').addEventListener('change',e=>{
+  if(e.matches&&overlay&&overlay.classList.contains('open')) menuToggle.click();
+});
 
 const revealItems=document.querySelectorAll('.reveal');
 if('IntersectionObserver' in window){
@@ -94,3 +109,10 @@ if('IntersectionObserver' in window){
   }),{threshold:.12});
   revealItems.forEach(el=>observer.observe(el));
 }else revealItems.forEach(el=>el.classList.add('is-visible'));
+
+
+
+
+
+
+
